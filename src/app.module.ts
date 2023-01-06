@@ -8,7 +8,7 @@ import { TaskProcessor } from './tasks/task-processor';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: `.env` }),
+    ConfigModule.forRoot({ isGlobal: true }),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
