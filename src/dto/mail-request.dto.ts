@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsEmail, IsString, IsUUID } from 'class-validator';
 
-export class SendEmailDto {
+export class MailRequestDto {
   @ApiProperty()
-  @IsString()
+  @IsEmail()
   mail_to: string;
 
   @ApiProperty()
@@ -11,7 +11,7 @@ export class SendEmailDto {
   partner_name: string;
 
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   transaction_id: string;
 
   @ApiProperty()

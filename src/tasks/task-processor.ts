@@ -30,7 +30,7 @@ export class TaskProcessor {
       const transporter = this.mailerService.createTransport({
         host: this.configService.get<string>('SMTP_HOST'),
         port: this.configService.get<number>('SMTP_PORT'),
-        logger: true,
+        // logger: true,
         // debug: true,
         secure: false,
         auth: {
