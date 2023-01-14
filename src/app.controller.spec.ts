@@ -4,35 +4,42 @@ import { AppService } from './app.service';
 import { MailRequestDto } from './dto/mail-request.dto';
 import { faker } from '@faker-js/faker';
 import { MailResponseDto } from './dto/response/mail.response.dto';
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, InternalServerErrorException } from '@nestjs/common';
+import { IMailData } from './core/mail-data.interface';
 
 describe('UsersController', () => {
   let controller: AppController;
   let mockMailResponse: MailResponseDto;
 
-  const mockAppService = {
+  const appService = {
     sendMail: jest.fn(),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [{ provide: AppService, useValue: mockAppService }],
+      providers: [{ provide: AppService, useValue: appService }],
     }).compile();
 
     controller = module.get<AppController>(AppController);
   });
 
+  afterEach(() => jest.clearAllMocks());
+
   describe('sendMail', () => {
-    it('should return info send mail', async () => {
-      // arrange
-      const mailDto: MailRequestDto = {
+    let mailDto: MailRequestDto;
+    beforeEach(async () => {
+      mailDto = {
         mail_to: 'yuckimoera@gmail.com',
         partner_name: 'BukaLapak',
         transaction_id: faker.datatype.uuid(),
         cashback_total: 'Rp. 14.500',
       };
-      const spySendMail = jest.spyOn(mockAppService, 'sendMail');
+    });
+
+    it('should return info send mail', async () => {
+      // arrange
+      const spySendMail = jest.spyOn(appService, 'sendMail');
       mockMailResponse = new MailResponseDto(
         HttpStatus.OK,
         `Send mail successfully`,
@@ -47,19 +54,21 @@ describe('UsersController', () => {
   });
 
   describe('handleSendMail', () => {
-    it('should send mail', async () => {
-      // arrange
-      const mailDto: MailRequestDto = {
+    let mailData: IMailData;
+    beforeEach(async () => {
+      mailData = {
         mail_to: 'yuckimoera@gmail.com',
         partner_name: 'BukaLapak',
         transaction_id: faker.datatype.uuid(),
         cashback_total: 'Rp. 14.500',
       };
-
-      const spySendMail = jest.spyOn(mockAppService, 'sendMail');
+    });
+    it('should send mail', async () => {
+      // arrange
+      const spySendMail = jest.spyOn(appService, 'sendMail');
 
       // act
-      await controller.handleSendMail(mailDto);
+      await controller.handleSendMail(mailData);
 
       // assert
       expect(spySendMail).toHaveBeenCalled();

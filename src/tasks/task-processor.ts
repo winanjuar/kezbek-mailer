@@ -15,7 +15,7 @@ export class TaskProcessor {
   constructor(private configService: ConfigService) {}
 
   @Process()
-  async senderHandler(job) {
+  async senderHandler(job: any) {
     try {
       const { partner_name, transaction_id, cashback_total } = job.data;
       const templatePath = join(
@@ -46,11 +46,11 @@ export class TaskProcessor {
         html: _content,
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
+      transporter.sendMail(mailOptions, (error) => {
         if (error) {
           this.logger.log(`${error}`);
         } else {
-          this.logger.log(`Email successfully sent: ${info}`);
+          this.logger.log(`[${transaction_id}] Email successfully sent`);
         }
       });
     } catch (error) {

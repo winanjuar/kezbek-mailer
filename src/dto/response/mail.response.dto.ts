@@ -8,10 +8,10 @@ export class MailResponseDto extends BaseResponseDto {
     this.data = data;
   }
 
-  @ApiProperty({ example: 200 })
+  @ApiProperty({ example: 201 })
   statusCode: number;
 
-  @ApiProperty({ example: 'This is string' })
+  @ApiProperty({ example: 'This is sample message mail sent' })
   message: string;
 
   @ApiProperty({ type: MailRequestDto })
